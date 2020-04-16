@@ -1,12 +1,7 @@
-ActiveRecord::Base.logger = Logger.new($stdout)
-abort 'It seems the database already was seeded before.' if User.exists?
-
-User.create!(name: 'First User',
-            email: 'first_user@email.com',
-            cpf: '01010101',
-            birth_date: 1.year.ago.to_date,
-            gender: 'Female',
-            city: 'First City',
-            state: 'First State',
-            country: 'First Country',
-            referral_code: '001')
+# This file should contain all the record creation needed to seed the database with its default values.
+# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
+#
+# Examples:
+#
+#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
+#   Character.create(name: 'Luke', movie: movies.first)
