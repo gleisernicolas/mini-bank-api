@@ -1,13 +1,13 @@
 FactoryBot.define do
     factory :user do
-      name { "John" }
-      email  { "Doe" }
-      cpf  { "0001001" }
+      name { Faker::Name.name }
+      email  { Faker::Internet.email }
+      cpf  { Faker::IDNumber.brazilian_citizen_number }
       birth_date  { 20.years.ago.to_date }
-      gender  { "Doe" }
-      city  { "Doe" }
-      state  { "Doe" }
-      country  { "Doe" }
-      referral_code  { "Doe" }
+      gender  { Faker::Gender.type }
+      city  { Faker::Address.city }
+      state  { Faker::Address.state }
+      country  { Faker::Address.country }
+      referral_code  { Faker::Number.number(digits: 8) }
     end
   end
