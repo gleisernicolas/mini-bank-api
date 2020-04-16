@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class Account < ApplicationRecord
     validates_uniqueness_of :cpf
     
     attribute :name, :encrypted, random_iv: false

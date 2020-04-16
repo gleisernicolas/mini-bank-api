@@ -1,6 +1,6 @@
-class CreateUsers < ActiveRecord::Migration[6.0]
+class CreateAccount < ActiveRecord::Migration[6.0]
   def change
-    create_table :users do |t|
+    create_table :accounts do |t|
       t.string :name
       t.string :email
       t.string :cpf, null: false
@@ -10,6 +10,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :state
       t.string :country
       t.string :referral_code
+      t.string :my_referral_code
 
       t.timestamps
     end

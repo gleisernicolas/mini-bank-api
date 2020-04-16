@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  subject { create(:user) }
+RSpec.describe Account, type: :model do
+  subject { create(:account) }
   
   context 'validations' do
     it { should validate_uniqueness_of(:cpf).case_insensitive }
