@@ -10,6 +10,7 @@ FactoryBot.define do
     country  { Faker::Address.country }
     referral_code  { Faker::Number.number(digits: 8) }
     my_referral_code  { Faker::Number.number(digits: 8) }
+    status { 'completed' }
     association :user
   end
 end
