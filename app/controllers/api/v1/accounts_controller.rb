@@ -24,9 +24,13 @@ module Api
         account.complete_account
 
         if account.save
-          json_response(account, :created)
+          response_params = { message: 'Account created successfully!',
+                             registration_status: account.status }
+          response_params[:my_referral_code] = account.my_referral_code if account.status == 'completed'
+          
+          json_response(response_params, :created)
         else
-          json_response({message: account.errors.messages},:bad_request )
+          json_response({ message: account.errors.messages }, :bad_request )
         end
       end
 
@@ -34,12 +38,12 @@ module Api
         primary_account = Account.find_by_my_referral_code(params[:referral_code])
 
         if primary_account.nil?
-          json_response({ message: 'Referral code not found or not linked with a account'}, :not_found)
+          json_response({ message: 'Referral code not found or not linked with a account' }, :not_found)
         elsif primary_account.status != 'completed'
           json_response({ message: 'Only completed accounts can have referrals'}, :not_acceptable)
         else
           accounts = Account.where(referral_code: params[:referral_code])
-          json_response(accounts)
+          json_response(format_referral_accounts(accounts))
         end
       end
 
@@ -59,6 +63,10 @@ module Api
 
       def set_account
         @account = Account.find(params['id'])
+      end
+
+      def format_referral_accounts(accounts)
+        accounts.map { |account| {id: account.id, name: account.name } }
       end
     end
   end

@@ -10,6 +10,23 @@ RSpec.describe Account, type: :model do
     it { should validate_presence_of(:cpf) }
     it { should validate_presence_of(:status) }
     it { should validate_presence_of(:user) }
+    it { should validate_length_of(:name).is_at_least(2).allow_nil }
+    it { should validate_length_of(:gender).is_at_least(2).allow_nil}
+    it { should validate_length_of(:city).is_at_least(2).allow_nil}
+    it { should validate_length_of(:state).is_at_least(2).allow_nil}
+    it { should validate_length_of(:country).is_at_least(2).allow_nil}
+    it { should validate_length_of(:referral_code).is_at_least(8).allow_nil}
+    it { should validate_length_of(:my_referral_code).is_at_least(8).allow_nil}
+    it { should allow_value('email@email.com').for(:email)}
+    it { should_not allow_value('invalid_email').for(:email)}
+
+    it 'birth_date_format' do
+      expect(build(:account, birth_date: '00-00-0000')).to be_invalid
+      expect(build(:account, birth_date: '16-03-1993')).to be_valid
+      expect(build(:account, birth_date: '1993-03-16')).to be_valid
+      expect(build(:account, birth_date: '16/03/1993')).to be_valid
+      expect(build(:account, birth_date: nil)).to be_valid
+    end
   end
 
   context 'relations' do

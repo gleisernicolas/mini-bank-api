@@ -45,12 +45,10 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
   describe 'POST /api/v1/accounts' do
     context 'with valid attributes' do
       it 'create a account' do
-        name = Faker::Name.name
-        
         expect {
           post :create,
                 params: {
-                  name: name,
+                  name: Faker::Name.name,
                   email:  Faker::Internet.email,
                   cpf:  Faker::IDNumber.brazilian_citizen_number,
                   birth_date:  20.years.ago.to_date,
@@ -63,8 +61,8 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
         }.to change(Account, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)['name']).to eq(name)
-        expect(JSON.parse(response.body)['status']).to eq('completed')
+        expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
+        expect(JSON.parse(response.body)['registration_status']).to eq('completed')
         expect(JSON.parse(response.body)['my_referral_code']).not_to be_nil
       end
     end
@@ -81,18 +79,18 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
         }.to change(Account, :count).by(1)
 
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)['status']).to eq('pending')
+        expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
+        expect(JSON.parse(response.body)['registration_status']).to eq('pending')
         expect(JSON.parse(response.body)['my_referral_code']).to be_nil
       end
 
       it 'create the account with pending status and change to complete when the rest of the params is sent' do
-        name = Faker::Name.name
         cpf = Faker::IDNumber.brazilian_citizen_number
         
         expect {
           post :create,
                 params: {
-                  name: name,
+                  name:  Faker::Name.name,
                   email:  Faker::Internet.email,
                   cpf:  cpf,
                   birth_date:  20.years.ago.to_date
@@ -100,9 +98,9 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
         }.to change(Account, :count).by(1)
         
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)['status']).to eq('pending')
+        expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
+        expect(JSON.parse(response.body)['registration_status']).to eq('pending')
         expect(JSON.parse(response.body)['my_referral_code']).to be_nil
-        expect(JSON.parse(response.body)['name']).to eq(name)
 
         id = JSON.parse(response.body)['id']
 
@@ -118,10 +116,9 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
           }
         }.not_to change(Account, :count)
 
-        expect(JSON.parse(response.body)['status']).to eq('completed')
+        expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
+        expect(JSON.parse(response.body)['registration_status']).to eq('completed')
         expect(JSON.parse(response.body)['my_referral_code']).not_to be_nil
-        expect(JSON.parse(response.body)['name']).to eq(name)
-        expect(JSON.parse(response.body)['id']).to eq(id)
       end
     end
 
@@ -135,6 +132,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
         }.not_to change(Account, :count)
 
         expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)["message"]["cpf"]).to include("can't be blank")
       end
     end
 
