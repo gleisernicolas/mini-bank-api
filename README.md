@@ -24,7 +24,7 @@ After you have all the requirements installed, you must follow the instuctions b
 - `export RUBYOPT='-W:no-deprecated -W:no-experimental'` *this step is to hide experimental deprecated warnings from `ruby 2.7.0`*
 - `rails db:setup`
 
-Now you can run the specs by doing `bundle exec rspec` or initialize our API and make requests usgin `bundle exec rails s`
+Now you can run the specs by doing `bundle exec rspec` or initialize our API and make requests using `bundle exec rails s`
 
 
 ## Contributing
@@ -34,6 +34,6 @@ Please read [code_of_conduct.md](/code_of_conduct.md) for details on our code of
 
 ## Authors
 
-* **Nicolas Gleiser** - *Initial work* - [PurpleBooth](https://github.com/gleisernicolas)
+* **Nicolas Gleiser** - *Initial work* - [Nicolas Gleiser](https://github.com/gleisernicolas)
 
 See also the list of [contributors](https://github.com/gleisernicolas/mini-bank-api/contributors) who participated in this project.
