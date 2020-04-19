@@ -115,6 +115,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
                   referral_code:  Faker::Number.number(digits: 8)
           }
         }.not_to change(Account, :count)
+        expect(response).to have_http_status(:created)
 
         expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
         expect(JSON.parse(response.body)['registration_status']).to eq('completed')

@@ -1,0 +1,14 @@
+default: &default
+  ios_app:
+    token: 'random_token_trust_me'
+  android_app:
+    token: 'this_is_even_more_random'
+  windows_phone_app:
+    token: '123_nobody_use'
+
+development:
+  <<: *default
+production:
+  <<: *default
+test:
+  <<: *default

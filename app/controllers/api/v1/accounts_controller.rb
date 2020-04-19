@@ -1,7 +1,7 @@
 module Api
   module V1
     class AccountsController < ApplicationController
-      before_action :authenticate!
+      before_action :authenticate_user!
       before_action :set_account, only: :show
 
 
@@ -30,7 +30,7 @@ module Api
           
           json_response(response_params, :created)
         else
-          json_response({ message: account.errors.messages }, :bad_request )
+          json_response({ message: account.errors.messages }, :bad_request)
         end
       end
 
