@@ -19,7 +19,7 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module MagnetisCodeChallenge
+module MiniBankApi
   class Application < Rails::Application
     config.api_only = true
     # Initialize configuration defaults for originally generated Rails version.
