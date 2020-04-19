@@ -11,11 +11,13 @@ class Account < ApplicationRecord
   belongs_to :user
 
   def complete_account
-    if attributes.symbolize_keys.except(:id, :status, :created_at, :updated_at, :referral_code, :my_referral_code).values.any?(&:nil?)
-      self.status = 'pending'
-    else
-      self.status = 'completed'
-      self.my_referral_code = SecureRandom.alphanumeric(8)
-    end
+    return if status == 'completed'
+    keys = %i(id status created_at updated_at referral_code my_referral_code)
+
+    return if attributes.symbolize_keys.except(*keys).values.any?(&:nil?)
+      
+    self.status = 'completed'
+    self.my_referral_code = SecureRandom.alphanumeric(8)
+    save if persisted?
   end
 end

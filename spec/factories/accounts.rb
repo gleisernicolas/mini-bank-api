@@ -8,8 +8,8 @@ FactoryBot.define do
     city  { Faker::Address.city }
     state  { Faker::Address.state }
     country  { Faker::Address.country }
-    referral_code  { Faker::Number.number(digits: 8) }
-    my_referral_code  { Faker::Number.number(digits: 8) }
+    referral_code  { SecureRandom.alphanumeric(8) }
+    my_referral_code  { SecureRandom.alphanumeric(8) }
     status { 'completed' }
     association :user
   end
