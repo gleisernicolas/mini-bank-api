@@ -30,6 +30,19 @@ module Api
         end
       end
 
+      def by_referral_code
+        primary_account = Account.find_by_my_referral_code(params[:referral_code])
+
+        if primary_account.nil?
+          json_response({ message: 'Referral code not found or not linked with a account'}, :not_found)
+        elsif primary_account.status != 'completed'
+          json_response({ message: 'Only completed accounts can have referrals'}, :not_acceptable)
+        else
+          accounts = Account.where(referral_code: params[:referral_code])
+          json_response(accounts)
+        end
+      end
+
       private
       
       def account_params

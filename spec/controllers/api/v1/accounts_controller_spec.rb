@@ -146,4 +146,44 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
       end
     end
   end
+
+  describe 'GET /api/v1/accounts/by_referral/:referral_code' do
+    context 'when the account exists' do
+      context 'and is a complete account' do
+        let(:complete_account) { create(:account, status: 'completed') }
+        let!(:referral_accounts) { create_list(:account, 2, referral_code: complete_account.my_referral_code) }
+        let!(:unrelated_accounts) { create_list(:account, 5)}
+
+        it 'return referrals for said account' do
+          get :by_referral_code, params: { referral_code: complete_account.my_referral_code }
+
+          expect(response).to have_http_status(:ok)
+          expect(JSON.parse(response.body).size).to be(2)
+        end
+      end
+
+      context 'and is not complete' do
+        let(:incomplete_primary_account) { create(:account, status: 'pending')}
+        let(:referral_account) { create(:account, referral_code: incomplete_primary_account.my_referral_code) }
+
+        it 'return error with the message "Only completed accounts can have referrals"' do
+          get :by_referral_code, params: { referral_code: incomplete_primary_account.my_referral_code}
+
+          expect(response).to have_http_status(:not_acceptable)
+          expect(JSON.parse(response.body)['message']).to eq('Only completed accounts can have referrals')
+        end
+      end
+    end
+
+    context 'when the account does not exist' do
+      let!(:unrelated_accounts) { create_list(:account, 5)}
+
+      it 'return error with the message "Referral code not found or not linked with a account"' do
+        get :by_referral_code, params: { referral_code: '999xxx66'}
+
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body)['message']).to eq('Referral code not found or not linked with a account')
+      end
+    end
+  end
 end
