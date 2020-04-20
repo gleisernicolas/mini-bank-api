@@ -7,11 +7,11 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     request.headers['Authorization'] = user.token
     request.headers['Content-Type'] = 'application/json'
   end
-  
+
   describe 'GET /api/v1/accounts/index' do
     it 'return all accounts' do
       expected_account = create_list(:account, 10)
-      
+
       get :index
 
       parsed_body = JSON.parse(response.body)
@@ -86,7 +86,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
 
       it 'create the account with pending status and change to complete when the rest of the params is sent' do
         cpf = Faker::IDNumber.brazilian_citizen_number
-        
+
         expect {
           post :create,
                 params: {
@@ -96,7 +96,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
                   birth_date:  20.years.ago.to_date
           }
         }.to change(Account, :count).by(1)
-        
+
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['message']).to eq('Account created successfully!')
         expect(JSON.parse(response.body)['registration_status']).to eq('pending')
@@ -146,7 +146,7 @@ RSpec.describe Api::V1::AccountsController, type: :controller do
     end
   end
 
-  describe 'GET /api/v1/accounts/by_referral/:referral_code' do
+  describe 'GET /api/v1/accounts/by_referral_code/:referral_code' do
     context 'when the account exists' do
       context 'and is a complete account' do
         let(:complete_account) { create(:account, status: 'completed') }

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include Response
   include ExceptionHandler
-  
+
   private
   def authenticate_user!
     @current_user = User.find_by_token(request.headers["Authorization"])
