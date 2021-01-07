@@ -4,13 +4,6 @@ module Api
       before_action :authenticate_user!
       before_action :set_account, only: :show
 
-
-      def index
-        accounts = Account.order(:created_at)
-
-        json_response(accounts)
-      end
-
       def show
         json_response(@account)
       end
